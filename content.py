@@ -40,20 +40,29 @@ def get_response_to_call(message):
 
 # TODO Move to db ASAP!
 def faq(message, commands=False):
+    sender = message.author.name
     faq_info = {
-        "!editor" : "The editor Bun uses is VSCode: https://code.visualstudio.com/",
-        "!theme" : "The theme Bun uses is Material Ocean High Contrast, with some modifications: https://imgur.com/a/ivJByy2",
+        "!deepthonk" : "howdy! I'm the channel's bot! I make \
+            sounds and automate things for Bun's streams.  My native \
+            language is Python and I'm an ongoing, live-coding project - built \
+            almost entirely on-stream! (pssst... hot n00ds @ http://bit.ly/deepthonkdev)",
+        "!info" : "you can find more info on the stream and current projects here: http://bit.ly/stream-stuff",
+        "!editor" : "the editor Bun uses is VSCode: https://code.visualstudio.com/",
+        "!theme" : "the theme Bun uses is Material Ocean High Contrast, with some modifications: https://imgur.com/a/ivJByy2",
         "!lang" : "Bun's probably coding in Pythong.",
         "!font" : "Bun uses Fira Code with font ligatures. https://github.com/tonsky/FiraCode",
+        "!work" : "Bun works full-time as an R&D engineer, specializing in rapid-prototyping and product design.",
+        "!howlong" : "Bun's been programming off/on for a few years (embedded C/C++). She's mostly self-tauhgt and fairly new to high-level design & OOP. She started learning Python in 2018 and has since been head-over-heels for it.",
         "!console" : "Bun's using CMDER console emulator.",
         "!github" : "Bun's github is: https://github.com/NinjaBunny9000",
         "!toolset" : "Bun's using VSCode on Windows right now. !theme !github !repo !font for more info.",
-        "!info" : "https://github.com/NinjaBunny9000/stream-stuff",
-        "!kanban" : "https://trello.com/b/Fm4Q3mBx/ninjabunny9000-stream-stuffs",
-        "!docs" : "You can find the most (poorly) up-to-date docs here: https://github.com/NinjaBunny9000/DeepThonk/blob/doc-updates/README.md",
+        # "!kanban" : "https://trello.com/b/Fm4Q3mBx/ninjabunny9000-stream-stuffs",
+        "!docs" : "you can find the most (poorly) up-to-date docs here: https://github.com/NinjaBunny9000/DeepThonk/blob/doc-updates/README.md",
         "!keyboard" : "Bun uses MX Brown switches on a POS keyboard that's falling apart.",
-        "!gitgud" : "Check out Corey Schafer on YT for some great Python tuturials! :D https://www.youtube.com/watch?v=YYXdXT2l-Gg&list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
-        "!bmo" : "https://imgur.com/gallery/LhPlY",
+        "!markdown" : "Bun formats the windows on the left and right of the code using Markdown syntax highlighting.",
+        "!gitgud" : "check out Corey Schafer on YT for some great Python tuturials! :D https://www.youtube.com/watch?v=YYXdXT2l-Gg&list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
+        "!soundcloud" : "Bun has mixes up on Soundcloud at https://soundcloud.com/pme/tracks",
+        "!bmo" : "Bun built a real-life BMO! Build blog: http://bit.ly/bmo-build-blog",
         "!asl" : "18/f/cali"
     }
 

@@ -87,7 +87,13 @@ async def event_message(message):
 
     # return FAQ's
     if content.faq(message):
-        msg = content.faq(message)
+        token = data_tools.tokenize(message, 2, lower_case=False)
+        try: 
+            if token[1]:
+                sender = data_tools.ats_or_nah(token[1])
+        except IndexError:
+            sender = message.author.name
+        msg = f"@{sender}, {content.faq(message)}"
         await twitch_bot.say(message.channel, msg)
 
 

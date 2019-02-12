@@ -16,7 +16,8 @@ async def spammyboi(message):
     spam_count = 0
     while spam_count < 4:
         spam_count += 1
-        await twitch_bot.say(message.channel, 'Spammed {} times!'.format(spam_count))
+        msg = 'Spammed {} times!'.format(spam_count)
+        await twitch_bot.say(message.channel, msg)
         await asyncio.sleep(3)
 
 @twitch_bot.command('spammy')
@@ -93,7 +94,6 @@ async def swapteams(message):
 @twitch_bot.command('faq')
 async def faq(message):
     faq_commands = data_tools.stringify_list(content.faq(message, commands=True))
-    print(faq_commands)
     token = data_tools.tokenize(message, 2)
     try: 
         if token[1]:
@@ -101,6 +101,18 @@ async def faq(message):
     except IndexError:
         user = message.author.name
     msg = f'@{user} {faq_commands}'
+    await twitch_bot.say(message.channel, msg)
+
+
+@twitch_bot.command('globals')
+async def globals(message):
+    token = data_tools.tokenize(message, 2, lower_case=False)
+    try: 
+        if token[1]:
+            user = data_tools.ats_or_nah(token[1])
+    except IndexError:
+        user = message.author.name
+    msg = f"@{user}, Bun's still learning the ins and outs of high-level/OOP design (the current project may not even be OOP). Using globals (or not) is a complicated subject and avoiding them entirely in early-stages of prototying (especially when live-coding) can potentially hinder progress. She'll get to refactoring out the global eventually but, for now, sit back relax and enjoy the show. :D Food for thought: http://bit.ly/2RWNHDs && http://bit.ly/considered-harmful"
     await twitch_bot.say(message.channel, msg)
 
 @twitch_bot.command('bigups')
