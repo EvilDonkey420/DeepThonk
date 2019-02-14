@@ -17,4 +17,4 @@ data/*.txt
 data/lists/*.txt
 data/lists/tasks/*.txt
 integrations/discordapp/secrets.yaml
-**secrets.yaml
+**/secrets.yaml
