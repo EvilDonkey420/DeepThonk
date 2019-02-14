@@ -45,7 +45,7 @@ def faq(message, commands=False):
         "!deepthonk" : "howdy! I'm the channel's bot! I make \
             sounds and automate things for Bun's streams.  My native \
             language is Python and I'm an ongoing, live-coding project - built \
-            almost entirely on-stream! (pssst... hot n00ds @ http://bit.ly/deepthonkdev)",
+            almost entirely on-stream! ( pssst... hot n00ds @ http://bit.ly/deepthonkdev )",
         "!info" : "you can find more info on the stream and current projects here: http://bit.ly/stream-stuff",
         "!editor" : "the editor Bun uses is VSCode: https://code.visualstudio.com/",
         "!theme" : "the theme Bun uses is Material Ocean High Contrast, with some modifications: https://imgur.com/a/ivJByy2",
