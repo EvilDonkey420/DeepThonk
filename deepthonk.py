@@ -12,13 +12,14 @@ import sfx
 import economy
 if conf.debug:
     import debug
+from utils.logger import loggyballs as log
 
 
 twitch_bot = conf.twitch_instance
 
 def start_twitch():
     # pull in the config var for ze bot!
-    print('Starting the Twitch bot...')
+    log.info('Starting the Twitch bot...')
     twitch_bot.start()
 
 def main():
@@ -29,6 +30,6 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        print('\nInterrupted via terminal. Shutting down...')
+        log.warning('\nInterrupted via terminal. Shutting down...')
         twitch_bot.stop(exit=True)
         os._exit(0)   

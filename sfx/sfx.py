@@ -1,4 +1,3 @@
-
 import os, random, time
 import csv
 import contextlib
@@ -9,6 +8,7 @@ with contextlib.redirect_stdout(None):
 # internal modules & packages
 import conf
 import games.raid
+# from utils.logger import loggyballs as loger
 
 
 # config ze bot!
@@ -19,14 +19,13 @@ mixer.init(frequency=44100)
 
 def play_sfx(full_file_path, r00d=True, unr00dable=False):
 	'Interrupts any sound being played and plays the new one that\'s passed in'
-	# TODO additional argument for interruptability or nah
 
 	# prevent trampling over raid routine
 	if full_file_path == 'sfx/events/raid_victory.mp3':
 		pass
 
 	elif games.raid.start():
-		# print(f'SFX ABORTED {full_file_path}') # TODO Logging refactor
+		# loger.warning(f'SFX ABORTED {full_file_path}')
 		return
 
 	if r00d:
@@ -37,10 +36,11 @@ def play_sfx(full_file_path, r00d=True, unr00dable=False):
 
 	# play the new sound
 	try:
-		# print(f'[SFX] {full_file_path} played') # TODO Logging refactor
 		mixer.music.play()
+		# loger.info(f"{full_file_path} was playted")
 	except TypeError:
-		print(f'TypeError - {full_file_path} didn\'t play because (assuming) file was not the right type') # TODO Logging refactor
+		# loger.warning(f"TypeError - path not playable.")
+		pass
 
 
 def play_random(folder_path):
@@ -63,20 +63,15 @@ def play_random(folder_path):
 class SoundEffect(object):
 	'Base class for all sound effects.'
 
-	# TODO Overriding cooldowns (csv? ORM models?)
-	# TODO Attributes: privilege level, cost
-
 	commands = []
 
 	# constructor
 	def __init__(self, cmd_name, cmd_path, cmd_timeout=conf.sfx['hooks_timeout']):
 		self.name = cmd_name
 		self.path = cmd_path
-		# TODO Look into using timedate.timedelta() instead
 		self.timeout = cmd_timeout 
 		self.last_used = time.time()
 
-		# TODO: Check and see if pre-existing command
 		# create/register file as command in event-loop
 		@twitch_bot.command(self.name)
 		async def sfx_func(message):
@@ -120,9 +115,6 @@ class RandomSoundEffect(object):
 
 	Eventually looks like ==> RandoSoundEffect(file_name, permission_level, cost, cooldown).
 	"""
-	# TODO Overriding cooldowns (csv? ORM models?)
-	# TODO Put 'hi' and 'bye' in their own thing? So they can work w/o '!' preface once that's func again
-	# TODO Attributes: privilege level, cost
 
 	commands = []
 
@@ -135,7 +127,6 @@ class RandomSoundEffect(object):
 		self.timeout = cmd_timeout
 		self.last_used = time.time()
 
-		# TODO: Check and see if pre-existing command
 		# create/register file as command in event-loop
 		@twitch_bot.command(self.name, alias=self.aliases, unprefixed=True)
 		async def rando_sfx_func(message):
@@ -152,7 +143,7 @@ class RandomSoundEffect(object):
 
 def generate_random_sfx_commands():
 
-	path = 'sfx/randoms/' # TODO change this to something configurable elsewhere for distro stuffs
+	path = 'C:/Users/Bun/Documents/repos/deepthonk/sfx/randoms'
 
 	# get a list of folders in sfx/randoms & create commands for each
 	for thing in os.listdir(path):
@@ -172,7 +163,6 @@ def generate_random_sfx_commands():
 			RandomSoundEffect(folder, files, get_aliases(folder))
 
 
-# TODO Get this loading aliases from text files
 def get_aliases(folder):
 	# loads alias file based on folder name
 	try:
@@ -202,12 +192,10 @@ class LEDSoundEffect(object):
 		self.path = cmd_path
 		self.char = cmd_char
 
-		# TODO: Check and see if pre-existing command
 		# create/register file as command in event-loop
 		@twitch_bot.command(self.cmd)
 		async def led_sfx_func(message):
 			if message.author.subscriber:
-				# serial_send.led_fx(self.cmd, self.char) # TODO Arduino stuffs
 				# playsound(self.path + self.cmd + '.mp3') # REVIEW 
 				play_sfx(self.path + self.cmd + '.mp3')
 		
@@ -231,14 +219,12 @@ setup_led_commands()
 # SECTION HELP Function
 ###################################################################
 
-# TODO Put these in a function
 
 # REVIEW function these out in a refactor
 @twitch_bot.command('sfx')
 async def sfx(message):
 	'Spits out a list of SFX commands. Pretty simple at the moment.'
 
-	# TODO https://github.com/NinjaBunny9000/DeepThonk/issues/26
 	
 	msg = 'SFX can be used freely by subscribers! :D '
 
@@ -249,7 +235,6 @@ async def sfx(message):
 		# get the length of the string & compare it to teh length it would be if it added the new command
 		if (len(msg) + len(cmd_name) + 2) >= 500:
 			# send message and start over
-			await twitch_bot.say(message.channel, msg)  # TODO Add page number
 			msg = ''
 		else:
 			# add to msg
@@ -259,7 +244,6 @@ async def sfx(message):
 				msg += f', {cmd_name}'
 	
 	# then send the rest
-	await twitch_bot.say(message.channel, msg) # TODO add final page number
 	# playsound('sfx/sfx.mp3')
 	play_sfx('sfx/sfx.mp3')
 
@@ -269,7 +253,6 @@ async def sfx(message):
 async def randomsfx(message):
 	'Spits out a list of RANDOM SFX commands. Pretty simple at the moment.'
 
-	# TODO https://github.com/NinjaBunny9000/DeepThonk/issues/26
 	
 	msg = 'SFX can be used freely by subscribers! :D '
 
@@ -280,7 +263,6 @@ async def randomsfx(message):
 		# get the length of the string & compare it to teh length it would be if it added the new command
 		if (len(msg) + len(cmd_name) + 2) >= 500:
 			# send message and start over
-			await twitch_bot.say(message.channel, msg)  # TODO Add page number
 			msg = ''
 		else:
 			# add to msg
@@ -290,7 +272,6 @@ async def randomsfx(message):
 				msg += f', {cmd_name}'
 	
 	# then send the rest
-	await twitch_bot.say(message.channel, msg) # TODO add final page number
 	# playsound('sfx/sfx.mp3')
 	play_sfx('sfx/sfx.mp3')
 
@@ -300,7 +281,6 @@ async def randomsfx(message):
 async def ledsfx(message):
 	'Spits out a list of all the LED-enabled SFX'
 
-	# TODO https://github.com/NinjaBunny9000/DeepThonk/issues/26
 	
 	msg = 'SFX can be used freely by subscribers! :D '
 
@@ -311,7 +291,6 @@ async def ledsfx(message):
 		# get the length of the string & compare it to teh length it would be if it added the new command
 		if (len(msg) + len(cmd) + 2) >= 500:
 			# send message and start over
-			await twitch_bot.say(message.channel, msg)  # TODO Add page number
 			msg = ''
 		else:
 			# add to msg
@@ -321,6 +300,5 @@ async def ledsfx(message):
 				msg += f', {cmd}'
 	
 	# then send the rest
-	await twitch_bot.say(message.channel, msg) # TODO add final page number
 
 # !SECTION

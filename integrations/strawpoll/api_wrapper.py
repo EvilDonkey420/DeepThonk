@@ -1,7 +1,10 @@
 import requests
 import json
+import pprint
 
 import data_tools
+from utils.logger import loggyballs as log
+
 
 """
 !poll add <poll title goes here>
@@ -33,7 +36,7 @@ def review_poll():
     options = data_tools.stringify_list(straw_poll['options'])
     # FIXME Make the formatting include the index/enum #
     jsonified_rollypolly = json.dumps(straw_poll, indent=2)
-    print(jsonified_rollypolly)
+    log.debug(jsonified_rollypolly)
     return f"title: {straw_poll['title']} // options: {options}"
 
 def setup_poll():
@@ -45,7 +48,7 @@ def setup_poll():
     # return object & parse
     r = r.json()
     # report returned url/poll-id
-    print(r)
+    log.debug(r)
     global poll_id
     global poll_link
     poll_link = f"https://www.strawpoll.me/{r['id']}"

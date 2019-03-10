@@ -1,6 +1,8 @@
 import conf
 from integrations.twitch.privilege import is_mod
 
+from utils.logger import loggyballs as log
+
 # config ze bot!
 twitch_bot = conf.twitch_instance
 
@@ -14,6 +16,7 @@ def change_scene(scene):
     **Requires 'Advance Scene Switcher' plug-in**
     Swap scenes in OBS studio by writing the scene name to a file.
     """
+    log.debug(f'Scene changed to {scene}')
     f = open('data\\scene_next.txt', 'w+')
     f.write(scene)
     f.close()

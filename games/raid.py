@@ -9,6 +9,7 @@ import integrations.twitch.api_wrapper
 from integrations.obs.ctrl import change_scene, get_scene
 from integrations.twitch.privilege import is_bot, is_mod
 from sfx.sfx import play_sfx
+from utils.logger import loggyballs as log
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
@@ -90,7 +91,7 @@ def deal_damage(message):
     global defending
 
     if message.author.name.lower() in raiding.members:
-        defending.hp -= len(message.emotes)*2.5
+        defending.hp -= len(message.emotes)*3
         
     if message.author.name.lower() in defending.members:
         raiding.hp -= len(message.emotes)
@@ -126,7 +127,6 @@ def append_defenders(chatter):
     if chatter not in raid_defender_members and chatter not in raid_attacker_members:
         # add them if they aren't
         raid_defender_members.append(chatter)
-        # print(f'[DEFENDER] {chatter} registered.')
 
 
 # FIXME compares list to instance attribute
@@ -141,7 +141,7 @@ def append_raiders(message):
         raid_attacker_members.append(chatter)
         raiding.members.append(chatter)
         # report/debug to serail
-        print(f'[RAIDER] {chatter} registered.')
+        log.info(f'[RAIDER] {chatter} registered.')
 
 
 def report_ko():
@@ -157,8 +157,6 @@ def stop():
 
 
 def reset_raid():
-    print('resetting raid score') # TODO Logging???
-    # data_tools.clear_txt('data/', 'raid_score.txt')
     data_tools.score_to_txt(conf.raid['max_hp'], conf.raid['max_hp'])
 
 
@@ -240,7 +238,7 @@ async def raid(message):
     if message.author.name.lower() in conf.bot_list:
         pass
     else:
-        print(f'no permissions for raid!!')
+        log.warning(f'no permissions for raid!!')
         return
 
     # start teh raid sequcence
@@ -259,6 +257,7 @@ async def raid(message):
 
     # also pls dont dubble-rade
     if raid_in_progress:
+        log.debug('raid already in progress')
         return
 
     # parse tokens from SE bot command to get the raider name
@@ -335,12 +334,9 @@ async def raidover(message):
 @twitch_bot.command('fakeraid')
 async def fakeraid(message):
     
-    print('command entered')
-
     if message.author.name.lower() == 'ninjabunny9000':
         pass
     else:
-        print('command exited')
         return
     
     # start teh raid sequcence

@@ -7,6 +7,8 @@ import asyncio
 from discord_conf import token
 from discord_conf import server_id
 
+# from utils.logger import loggyballs as log
+
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here.'''
@@ -20,6 +22,9 @@ def start_bot():
 
 @bot.event
 async def on_ready():
+    # log.info('-------------------------------------------------------')
+    # log.info(f'Logged in as {bot.user.name} on Ninja\'s Server')
+    # log.info('-------------------------------------------------------')
     print('-------------------------------------------------------')
     print(f'Logged in as {bot.user.name} on Ninja\'s Server')
     print('-------------------------------------------------------')
@@ -62,10 +67,12 @@ async def on_message(message):
 async def roles(ctx):
     'List roles a user has (except @everyone)'
     message = ctx.message
+    # log.debug('Role command called.')
     print('Role command called.')
     member_roles = []
     for role in message.author.roles:
         member_roles.append(role.name)
+    # log.debug(member_roles)
     print(member_roles)
     msg = f'Roles: {member_roles[1:]}'
     await bot.say(msg)
@@ -122,6 +129,7 @@ Hi, @user. You're subscribed to the following alerts:
 
 @bot.command(pass_context=True)
 async def debug(ctx):
+    # log.debug(dir(ctx.message))
     print(dir(ctx.message))
 
 

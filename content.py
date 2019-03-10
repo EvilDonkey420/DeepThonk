@@ -1,6 +1,7 @@
 import random
 import conf
 from integrations.obs.ctrl import change_scene
+import data_tools
 
 
 def help_menu(message):
@@ -37,7 +38,28 @@ def get_response_to_call(message):
         if call.lower() in message.content.lower():
             return calls_and_responses.get(call)
 
+def cursed(message):
+    tokens = data_tools.tokenize(message)
+    words = [
+        'fortnite',
+        'vim',
+        'emacs',
+        'globals',
+        'global',
+        'cheesecake',
+        'vape',
+        '1337',
+        'pepsi',
+        'rust'
+    ]
 
+    # return word if word in message.content else None
+    for word in words:
+        if word in tokens:
+            return word
+    return None
+
+           
 # TODO Move to db ASAP!
 def faq(message, commands=False):
     sender = message.author.name
@@ -48,9 +70,11 @@ def faq(message, commands=False):
             almost entirely on-stream! ( pssst... hot n00ds @ http://bit.ly/deepthonkdev )",
         "!info" : "you can find more info on the stream and current projects here: http://bit.ly/stream-stuff",
         "!editor" : "the editor Bun uses is VSCode: https://code.visualstudio.com/",
-        "!theme" : "the theme Bun uses is Material Ocean High Contrast, with some modifications: https://imgur.com/a/ivJByy2",
+        "!theme" : "the0. theme Bun uses is Material Ocean High Contrast, with some modifications: http://bit.ly/nb9k-settings",
         "!lang" : "Bun's probably coding in Pythong.",
+        "!playlist" : "find music played on the stream @ http://bit.ly/nb9kspotify",
         "!font" : "Bun uses Fira Code with font ligatures. https://github.com/tonsky/FiraCode",
+        "!settings" : "VSCode settings here: http://bit.ly/nb9k-settings",
         "!work" : "Bun works full-time as an R&D engineer, specializing in rapid-prototyping and product design.",
         "!howlong" : "Bun's been programming off/on for a few years (embedded C/C++). She's mostly self-tauhgt and fairly new to high-level design & OOP. She started learning Python in 2018 and has since been head-over-heels for it.",
         "!console" : "Bun's using CMDER console emulator.",
@@ -66,7 +90,7 @@ def faq(message, commands=False):
         "!asl" : "18/f/cali"
     }
 
-    if commands == True:
+    if commands:
         return list(faq_info.keys())
 
     else:
@@ -74,6 +98,16 @@ def faq(message, commands=False):
             if key.lower() in message.content.lower():
                 return faq_info.get(key)
 
+
+def raid_messages(message):
+    messages = [
+        "ninjab1Slay ninjab1Slay ninjab1Slay RAID MESSAGE 1 ninjab1Slay ninjab1Slay ninjab1Slay",
+        "ninjab1Slay ninjab1Slay ninjab1Slay RAID MESSAGE 2 ninjab1Slay ninjab1Slay ninjab1Slay",
+        "ninjab1Slay ninjab1Slay ninjab1Slay RAID MESSAGE 3 ninjab1Slay ninjab1Slay ninjab1Slay",
+        "ninjab1Slay ninjab1Slay ninjab1Slay RAID MESSAGE 4 ninjab1Slay ninjab1Slay ninjab1Slay",
+        "ninjab1Slay ninjab1Slay ninjab1Slay RAID MESSAGE 5 ninjab1Slay ninjab1Slay ninjab1Slay",
+    ]
+    return random.choice(messages)
 
 def generic_responses(message):
     responses = [

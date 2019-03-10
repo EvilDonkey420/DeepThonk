@@ -11,6 +11,7 @@ from integrations.twitch.privilege import is_bot, is_mod
 import games.raid
 import data_tools
 from sfx.sfx import play_sfx
+from utils.logger import loggyballs as log
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
@@ -27,7 +28,7 @@ async def raw_event(message):
     if not welcome_msg_sent:
         welcome_msg_sent = 1
         welcome_msg = conf.bot_settings['welcome_msg']
-        print(conf.bot_name.capitalize() + ' has landed.')
+        log.info(conf.bot_name.capitalize() + ' has landed.')
         await twitch_bot.say(conf.twitch_channel, welcome_msg)
         play_sfx('sfx/hooks/back.mp3')
         await twitch_bot.say(conf.twitch_channel, "/me tips fedora to chat")
@@ -214,16 +215,11 @@ async def event_message(message):
         await twitch_bot.say(message.channel, reply.strip("\n"))
 
     # sum1 sed fortnite
-    if 'play' in message.content.lower() and 'fortnite' in message.content.lower():
-        msg = 'y would u even think that, @{message.author.name}??'
+    cursed_word = content.cursed(message)
+    if cursed_word:
+        msg = f"who said {cursed_word}!?!??"
         await twitch_bot.say(message.channel, msg)
-        await twitch_bot.say(message.channel,f'/timeout {message.author.name} 30')
-
-    elif 'fortnite' in message.content.lower():
-        msg = 'who sed fortnite!?!!??...'
-        await twitch_bot.say(message.channel, msg)
-        await twitch_bot.say(message.channel,f'/timeout {message.author.name} 15')
-
+        await twitch_bot.say(message.channel, f'/timeout {message.author.name} 1 {cursed_word}')
 
 ###############################################################################
 # SECTION Bot On / Off Control

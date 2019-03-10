@@ -16,5 +16,9 @@ sfx/events/strikes/*.mp3
 data/*.txt
 data/lists/*.txt
 data/lists/tasks/*.txt
+debug/**
 integrations/discordapp/secrets.yaml
 **/secrets.yaml
+debug/log/*.txt
+
+debug/

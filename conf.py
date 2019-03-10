@@ -48,10 +48,7 @@ def get_twitch_config():
     )
     return bot_config
 
-# try:
 twitch_instance = get_twitch_config()
-# except:
-#     print('failed')
 
 bot_name = str(cfg_apis['twitch']['bot_account'])
 streamer = cfg_apis['twitch']['streamer']

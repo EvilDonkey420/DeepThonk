@@ -27,8 +27,6 @@ async def earworm(message):
     '[earworm] ------> [lose]'
     global earworm_last_used
 
-    # print(f"last earworm : {time.time() - earworm_last_used}")
-
     # focus-mode cooldown timer
     if time.time() - earworm_last_used < earworm_timeout_period:
         msg = f"We're in focus mode tonight, @{message.author.name}. !earworm has a 60-second cooldown."
@@ -93,6 +91,6 @@ async def earworm(message):
     play_sfx(random_mp3)
 
     earworm_last_used = time.time()
-    print(f"earworm used. timer reset")
+    log.debug(f"earworm used. timer reset")
 
 # !SECTION 
