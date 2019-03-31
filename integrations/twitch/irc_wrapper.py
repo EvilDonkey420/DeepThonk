@@ -11,6 +11,7 @@ import subprocess
 import functools
 import sqlite3
 import pathlib
+import integrations
 
 from .irc_dataclasses import Command, Message, User
 
@@ -269,10 +270,10 @@ class Bot:
                     self.viewers[c]['global_moderators'] = j[
                         'chatters']['global_mods']
 
-            except Exception:
+            except Exception as e:
                 # traceback.print_exc()
-                print('YA DUN GOOFED')
-                pass
+                print(e)
+                print('YA DUN GOOFED!')
             yield from asyncio.sleep(60)
 
     @asyncio.coroutine

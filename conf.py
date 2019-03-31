@@ -56,9 +56,12 @@ twitch_channel = cfg_apis['twitch']['channel']
 
 streamelements_id = cfg_apis['streamelements']['account_id']
 streamelements_auth = f"Bearer {cfg_apis['streamelements']['jwt_token']}"
+streamelements_jwt = cfg_apis['streamelements']['jwt_token']
 
 discord_token = cfg_apis['discord']['token']
 discord_server = cfg_apis['discord']['server_id']
+
+streamlabs_socketio_token = cfg_apis['streamlabs']['socketio_token']
 
 
 # ANCHOR Modules

@@ -22,3 +22,15 @@ integrations/discordapp/secrets.yaml
 debug/log/*.txt
 
 debug/
+
+*.mp3
+
+*.ogg
+
+*.bat
+
+*.junk
+
+*.pkf
+
+*.wav

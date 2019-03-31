@@ -76,17 +76,17 @@ async def bigups(message):
         user = token[1]
         user = data_tools.ats_or_nah(user)
 
-        data_tools.add_to_txt('data/','reward_list.txt', token[1]) # new hotness
+        data_tools.add_to_txt('data/', 'reward_list.txt', token[1])  # new hotness
         # reward_register.append(token[1]) # old and busted
-        msg = f'Bigups for @{user}! What a champ! I\'ve added them to the reward \
+        msg = f'ninjab1Bigups for @{user}! What a champ! I\'ve added them to the reward \
         cue! :D'
         await twitch_bot.say(message.channel, msg)
-        msg = f'ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay \
-        ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay \
-        ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay \
-        ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay \
-        ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay \
-        ninjab1Slay ninjab1Slay ninjab1Slay ninjab1Slay'
+        msg = f'ninjab1Slay ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay \
+        ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay \
+        ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay \
+        ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay \
+        ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay \
+        ninjab1Bigups ninjab1Slay ninjab1Bigups ninjab1Slay'
         await twitch_bot.say(message.channel, msg)
 
 # !SECTION 

@@ -10,7 +10,7 @@ fh.setLevel(logging.WARNING)
 
 # create console handler
 ch = logging.StreamHandler()
-# ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 
 # format
 fh_formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
