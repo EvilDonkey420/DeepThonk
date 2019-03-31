@@ -48,15 +48,28 @@ def cursed(message):
         'global',
         'cheesecake',
         'vape',
-        '1337',
         'pepsi',
-        'rust'
+        'rust',
+        'vi',
+        'nano',
+        'flex',
+        'hashtag',
+        'neovim',
+        'curlybraces',
+        'tabs',
+        'spaces',
+        'politics',
+        'religion',
+        'trump',
+        'drumpf',
+        'word',
+        'nullptr'
     ]
 
     # return word if word in message.content else None
     for word in words:
-        if word in tokens:
-            return word
+        if word.lower() in tokens:
+            return word.lower()
     return None
 
            
@@ -87,7 +100,11 @@ def faq(message, commands=False):
         "!gitgud" : "check out Corey Schafer on YT for some great Python tuturials! :D https://www.youtube.com/watch?v=YYXdXT2l-Gg&list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
         "!soundcloud" : "Bun has mixes up on Soundcloud at https://soundcloud.com/pme/tracks",
         "!bmo" : "Bun built a real-life BMO! Build blog: http://bit.ly/bmo-build-blog",
-        "!asl" : "18/f/cali"
+        "!asl" : "18/f/cali",
+        "!cam" : "Bun's using a Canon 70D w/ Rokinon Cine 35mm prime 1.4",
+        "!heresyourproblem" : "https://clips.twitch.tv/EndearingCleverRadishWTRuck",
+        "!minecraftmode" : "https://clips.twitch.tv/RenownedFantasticLeopardPeoplesChamp"
+
     }
 
     if commands:
@@ -226,6 +243,6 @@ def sentient(message):
 
 def function_disabled():
     pass
-    # sfx.play_sfx('sfx/randoms/disabled/disabled.mp3')
+    # sfx.play_sfx('sfx/randoms/disabled/disabled.ogg')
 
 
