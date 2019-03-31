@@ -17,7 +17,7 @@ help_commands = conf.bot_settings['help_cmds']
 
 @twitch_bot.command('help', alias=help_commands)
 async def cmd(message):
-    play_sfx('sfx/help.mp3')
+    play_sfx('sfx/help.ogg')
     await twitch_bot.say(message.channel, content.help_menu(message))
 
 

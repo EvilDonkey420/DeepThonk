@@ -244,7 +244,7 @@ async def raid(message):
     # start teh raid sequcence
     global raid_started
     raid_started = False # FIXME why does this need to be here?
-    play_sfx('sfx/events/raid.mp3')
+    play_sfx('sfx/events/raid.ogg')
 
     # REVIEW NinjaBunny9000 channel only!
     if conf.twitch_channel.lower() == 'ninjabunny9000'.lower():
@@ -311,7 +311,7 @@ async def raidover(message):
 
     # REVIEW NinjaBunny9000 channel only!
     if conf.twitch_channel.lower() == 'ninjabunny9000'.lower():
-        play_sfx('sfx/randoms/disabled/disabled.mp3')
+        play_sfx('sfx/randoms/disabled/disabled.ogg')
     change_scene(conf.raid['victory_scene'])
     await twitch_bot.say(message.channel, "Keepo")
     await asyncio.sleep(1)

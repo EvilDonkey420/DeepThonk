@@ -1,13 +1,11 @@
-import random
-import sys
-import os
 import asyncio
+import time
 
 # internal modules & packages
 import conf
 import content
 from integrations.obs.ctrl import change_scene
-from integrations.twitch.privilege import is_bot, is_mod
+from integrations.twitch.privilege import is_mod
 import games.raid
 import data_tools
 from sfx.sfx import play_sfx
@@ -30,7 +28,7 @@ async def raw_event(message):
         welcome_msg = conf.bot_settings['welcome_msg']
         log.info(conf.bot_name.capitalize() + ' has landed.')
         await twitch_bot.say(conf.twitch_channel, welcome_msg)
-        play_sfx('sfx/hooks/back.mp3')
+        play_sfx('sfx/hooks/back.ogg') # DEBUG
         await twitch_bot.say(conf.twitch_channel, "/me tips fedora to chat")
 
         # make initial list of people in the room
@@ -86,6 +84,7 @@ async def event_message(message):
     mod = is_mod(message)
     bot = conf.bot_name.lower()
 
+
     # return FAQ's
     if content.faq(message):
         token = data_tools.tokenize(message, 2, lower_case=False)
@@ -124,7 +123,7 @@ async def event_message(message):
                 games.raid.stop()
                 raid_winner = games.raid.get_winner() 
                 
-                play_sfx('sfx/events/raid_victory.mp3')
+                play_sfx('sfx/events/raid_victory.ogg')
 
                 # report the victor
                 raid_over_msg = conf.raid['raid_over']
@@ -205,7 +204,7 @@ async def event_message(message):
 
     # for use by Robosexuals™ only!
     if (any(s in message.content.lower() for s in ('love you','love u', 'love me')) and bot):
-        play_sfx('sfx/hooks/norobo.mp3')
+        play_sfx('sfx/hooks/norobo.ogg')
         multi_msg.append(content.love_or_nah())
 
     # Combine all responses in a random order and send them in chat
@@ -230,8 +229,9 @@ off_cmd = conf.bot_settings['off_cmd'].lower()
 @twitch_bot.command(off_cmd)
 async def off(message):
     if message.author.mod or message.author.name == conf.streamer:
-        play_sfx('sfx/hooks/oof.mp3')
-        await twitch_bot.say(message.channel, content.last_words())  # DEBUG comment later (used for debug)
+        play_sfx('sfx/hooks/oof.ogg')  # DEBUG 
+        # await twitch_bot.say(message.channel, content.last_words())  # DEBUG comment later (used for debug)
+        time.sleep(.5)  # allow time for !oof to play
         bot = conf.twitch_instance
         print('Chat-Interrupted')
         print('Stopping the bot..')
@@ -257,7 +257,7 @@ async def so(message):
         token = data_tools.tokenize(message, 2)
         streamer = data_tools.ats_or_nah(token[1])
         try:
-            msg = f"Big ups to @{streamer}! They're a friend of the stream and \
+            msg = f"ninjab1Bigups to @{streamer}! They're a friend of the stream and \
             worth a follow, if you have the time! https://twitch.tv/{streamer}"
             await twitch_bot.say(message.channel, msg)
         except:
