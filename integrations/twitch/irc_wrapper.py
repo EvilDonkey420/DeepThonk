@@ -292,6 +292,11 @@ class Bot:
         """
         if self.client_id is not None:
             self.loop.create_task(self._get_stats())
+            self.loop.create_task(
+                # integrations.streamelements.socketio_wrapper.listen_streamelements()
+                integrations.streamlabs.socketio_wrapper.listen_streamlabs()
+                )
+                
         if tasked:
             self.loop.create_task(self._tcp_echo_client())
         else:
