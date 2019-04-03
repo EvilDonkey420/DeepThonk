@@ -242,15 +242,16 @@ async def sfx(message):
     'Spits out a list of SFX commands. Pretty simple at the moment.'
 
     
-    msg = 'SFX can be used freely by subscribers! :D '
+    msg = 'SFX can be used freely by subscribers! :D !bigups, '
 
     # for every item in an enumerated list of commands
     for cmd in SoundEffect.commands:
-        cmd_name = f'!{cmd.name}' # add the !
+        cmd_name = f'!{cmd.name}'  # add the !
 
         # get the length of the string & compare it to teh length it would be if it added the new command
         if (len(msg) + len(cmd_name) + 2) >= 500:
             # send message and start over
+            await twitch_bot.say(message.channel, msg)
             msg = ''
         else:
             # add to msg
@@ -262,6 +263,7 @@ async def sfx(message):
     # then send the rest
     # playsound('sfx/sfx.ogg')
     play_sfx('sfx/sfx.ogg')
+    await twitch_bot.say(message.channel, msg)
 
 
 # REVIEW function these out in a refactor
@@ -274,7 +276,7 @@ async def randomsfx(message):
 
     # for every item in an enumerated list of commands
     for cmd in RandomSoundEffect.commands:
-        cmd_name = f'!{cmd.name}' # add the !
+        cmd_name = f'{cmd.name}'  # add the !
 
         # get the length of the string & compare it to teh length it would be if it added the new command
         if (len(msg) + len(cmd_name) + 2) >= 500:
@@ -288,8 +290,8 @@ async def randomsfx(message):
                 msg += f', {cmd_name}'
     
     # then send the rest
-    # playsound('sfx/sfx.ogg')
     play_sfx('sfx/sfx.ogg')
+    await twitch_bot.say(message.channel, msg)
 
 
 # REVIEW function these out in a refactor
@@ -316,5 +318,6 @@ async def ledsfx(message):
                 msg += f', {cmd}'
     
     # then send the rest
+    await twitch_bot.say(message.channel, msg)
 
 # !SECTION
