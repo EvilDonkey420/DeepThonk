@@ -1,5 +1,5 @@
 import conf
-from integrations.hue.api_wrapper import flashbang
+from integrations.hue.api_wrapper import controller
 from sfx.sfx import play_sfx
 
 # config ze bot!
@@ -25,7 +25,7 @@ async def debug(message):
 
 @twitch_bot.command('flashbang')
 async def flashbang(message):
-    twitch_bot.loop.create_task(flashbang())
+    twitch_bot.loop.create_task(controller.flashbang())
     play_sfx('sfx/ledcmds/flashbang.ogg')
 
 @twitch_bot.command('weewoo')

@@ -11,7 +11,7 @@ from conf import streamlabs_socketio_token as sio_token
 from sfx.sfx import play_developers
 from sfx.sfx import stop_developers
 
-from integrations.hue.api_wrapper import set_color, flash
+from integrations.hue.api_wrapper import controller as hue
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
@@ -72,10 +72,10 @@ async def on_event(event):
         twitch_bot.loop.create_task(hardmode_task(sender, seconds))
     
     if event['type'] == 'follow':
-        twitch_bot.loop.create_task(flash(['bed', 'stairs', 'desk'], 'purple', 1, 4))
+        twitch_bot.loop.create_task(hue.flash(['bed', 'stairs', 'desk'], 'purple', 1, 4))
 
     if event['type'] == 'subscription':
-        twitch_bot.loop.create_task(flash(['bed' 'stairs', 'desk'], 'lightblue', 1, 4))
+        twitch_bot.loop.create_task(hue.flash(['bed' 'stairs', 'desk'], 'lightblue', 1, 4))
         
 
 @sio.on('disconnect')
