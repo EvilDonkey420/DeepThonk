@@ -223,7 +223,7 @@ class LEDSoundEffect(object):
 # this is not fun
 def setup_led_commands():
     path = 'sfx/ledcmds/'
-    LEDSoundEffect('flashbang', path, 'f')
+    # LEDSoundEffect('flashbang', path, 'f')
     LEDSoundEffect('weewoo', path, 'w')
 
 setup_led_commands()

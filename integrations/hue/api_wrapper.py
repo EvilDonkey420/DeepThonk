@@ -37,7 +37,7 @@ class HueLight:
     the lights a little more cleanly than the library provides. 
     
     Eventually, this will all be moved to a library I'll write myself once I
-    experiment a little more with how I want to use it. -Bun"""
+    experimennt a little more with how I want to use it. -Bun"""
 
     color = {
         "test" : hex("ff0000"),
@@ -50,12 +50,11 @@ class HueLight:
         "pink" : [.5, 0],
         "magenta" : hex("ff4cce"),
         "red" : [1, 0],
-        "aqua" : [0, 0.5]
+        "aqua" : [0, 0.5],
+        "white" : hex("ffffff")
     }
 
     state = ['off', 'on']
-
-    group = ['bed', 'stairs', 'desk']
 
 
 # WIP
@@ -74,8 +73,21 @@ class Settings:
         'group_id' : '1'
     }
 
+    default_group = ['bed', 'stairs', 'desk']
+
     def get_default_scene(self):
         return self.default_scene
+
+    def get_default_group(self):
+        return self.default_group
+
+settings = Settings()
+
+
+class Controller:
+    """Controls HueLights & HueScenes via the Bridge object, per Settings"""
+    
+
 
 
 def setup(pp):
@@ -88,7 +100,7 @@ def setup(pp):
 
 async def wee_woo(lights, rate, amount):
     lights_on()
-
+ 
     for i in range(amount):
         set_color(['bed', 'desk', 'stairs'], 'red', 254)
         await asyncio.sleep(rate)
@@ -98,7 +110,7 @@ async def wee_woo(lights, rate, amount):
     return_to_default()
 
 
-async def flash(lights, color, rate, amount=1):
+async def flash(color, rate, lights=settings.get_default_group(), amount=1):
     set_color(lights, color)
     
     for i in range(amount):
@@ -108,6 +120,16 @@ async def flash(lights, color, rate, amount=1):
         lights_on()
 
     return_to_default()
+
+
+async def flashbang():
+    # turn on the lights quikcly and at full brightness, all white (1,1)
+    set_color('white', speed=1)
+    await asyncio.sleep(1)
+    # fade them out slowly
+    lights_off(speed=500)
+    return_to_default()
+
     
 
 # WIP -- Needs functionality
@@ -118,12 +140,12 @@ def return_to_default():
     set_scene(settings.get_default_scene())
     
 
-def set_color(lights, color):
+def set_color(color, lights=settings.get_default_group(), speed=5):
     lamp = HueLight()
     command = {
         'on' : True,
         'bri' :  254,
-        'transitiontime' : 5,
+        'transitiontime' : speed,
         'xy' : lamp.color[color]
     }
     b.set_light(lights, command)
@@ -136,16 +158,17 @@ def set_color_old(b, light, color, bri=254):
     lights[light].brightness = bri
 
 
-def lights_on(transitiontime=100):
+def lights_on(speed=100):
     lights = b.lights  # get dict with name as key
     for l in lights:
         l.bri = 254
         l.on = True
 
 
-def lights_off(transitiontime=100):
+def lights_off(speed=100):
     lights = b.lights
     for l in lights:
+        l.transitiontime = speed
         l.bri = 254
         l.on = False
 
@@ -175,51 +198,7 @@ async def rave_party(message, rate=0.5):
     return_to_default()
 
 
-# ANCHOR Twitch commands (mostly for debug purposes)
-###############################################################################
 
-@twitch_bot.command('weewoo')
-async def weewoo(message):
-
-    # gtfo if u dun b-long
-    if not message.author.subscriber:
-        await twitch_bot.say(message.channel, f"subscribers only, @{message.author.name}")
-        return
-
-    twitch_bot.loop.create_task(wee_woo(1, 4))
-
-
-@twitch_bot.command('lightson')
-async def lightson(message):
-
-    lights_on(1)
-
-
-@twitch_bot.command('lightsoff')
-async def lightsoff(message):
-
-    lights_off(1)
-
-
-# WIP -- Starts but won't cancel.
-@twitch_bot.command('rave')
-async def rave(message):
-    'Starts a rave, flashes a bunch of lights until it gets busted.'
-
-    rave = twitch_bot.loop.create_task(rave_party(message))
-    await rave
-
-
-# WIP -- Not actually canceling the rave.
-@twitch_bot.command('ravebusted')
-async def ravebusted(message):
-    'Eventually a mock rave bust that happens in chat. Can we somehow gamify?'
-
-    global rave_mode
-    rave_mode = False
-
-    await twitch_bot.say(message.channel, "OPEN UP IT'S DA POLICE")
-    rave.cancel()
     
     
 # ANCHOR DEBUG FUNCTIONS
@@ -230,13 +209,6 @@ def toggle_lights():
     for l in lights:
         l.on = not l.on
         print(f"{l.name} switch to {l.on}")
-
-
-@twitch_bot.command('debug')
-async def debug(message):
-    return_to_default() 
-    # set_scene()
-    # toggle_lights()
 
 
 async def hue_task(func):
