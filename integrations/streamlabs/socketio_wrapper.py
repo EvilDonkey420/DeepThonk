@@ -65,23 +65,35 @@ async def hardmode_task(sender, seconds):
 
 @sio.on('event')
 async def on_event(event):
-    if event['type'] == 'bits' and event['message'][0]['amount'] >= 100:
+    if event['type'] == 'bits':
+        twitch_bot.loop.create_task(hue.flash('green', attack=1, release=1, sustain=.1, times=8))
+
+    if event['type'] == 'bits' and int(event['message'][0]['amount']) >= 60:
         seconds = event['message'][0]['amount']
         sender = event['message'][0]['name']
 
         twitch_bot.loop.create_task(hardmode_task(sender, seconds))
     
     if event['type'] == 'follow':
-        twitch_bot.loop.create_task(hue.flash(['bed', 'stairs', 'desk'], 'purple', 1, 4))
+        twitch_bot.loop.create_task(hue.flash('purple', times=4))
 
     if event['type'] == 'subscription':
-        twitch_bot.loop.create_task(hue.flash(['bed' 'stairs', 'desk'], 'lightblue', 1, 4))
+        twitch_bot.loop.create_task(hue.flash('lightblue', times=4))
         
+    if event['type'] == 'donation':
+        twitch_bot.loop.create_task(hue.flash('yellow', times=4))
+
+    if event['type'] == 'host':
+        twitch_bot.loop.create_task(hue.flash('red', times=10))
+
+    if event['type'] == 'raid':
+        twitch_bot.loop.create_task(hue.flash('red', times=10))
+
 
 @sio.on('disconnect')
 async def on_disconnect():
     print(f"y u disconnect?")
-
+    
 
 async def listen_streamlabs():
     await sio.connect(f"https://sockets.streamlabs.com?token={sio_token}")

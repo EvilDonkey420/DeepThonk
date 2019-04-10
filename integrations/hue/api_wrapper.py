@@ -13,23 +13,21 @@
 
 from rgbxy import Converter
 from phue import Bridge
+# import time 
 import random
-
 import asyncio
 import conf
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
-b = Bridge("192.168.1.136")  # h4ck t3h pl4n3t
-
-# !globals(?)
-rave_mode = False  # DEBUG 
 
 
 def hex(hex_val):
     converter = Converter()
     return list(converter.hex_to_xy(hex_val))
 
+class RaveInterrupted(Exception):
+    pass
 
 # WIP
 class HueLight:
@@ -39,9 +37,8 @@ class HueLight:
     Eventually, this will all be moved to a library I'll write myself once I
     experimennt a little more with how I want to use it. -Bun"""
 
-    
-
-    state = ['off', 'on']
+    def __init__(self):
+        self.state = ['off', 'on']
 
 
 # WIP
@@ -51,7 +48,7 @@ class HueScene:
 
 
 # WIP 
-class Settings:
+class HueSettings:
     """Eventually holds bot-specific settings for the integration"""
     
     active_lights = ""
@@ -62,19 +59,7 @@ class Settings:
 
     default_group = ['bed', 'stairs', 'desk']
 
-    def get_default_scene(self):
-        return self.default_scene
-
-    def get_default_group(self):
-        return self.default_group
-
-settings = Settings()
-
-
-class Controller:
-    """Controls HueLights & HueScenes via the Bridge object, per Settings"""
-
-    _color = {
+    color = {
         "test" : hex("ff0000"),
         "orange" : [.75, .5],
         "gold" : [.5, .5],
@@ -89,135 +74,149 @@ class Controller:
         "white" : hex("ffffff")
     }
 
-    # Constructythings
-    def __init__(self):
-        # TODO Pass in HueLights upon instantiation
-        pass
+    def get_default_scene(self):
+        return self.default_scene
+
+    def get_default_group(self):
+        return self.default_group
 
 
-    @staticmethod
-    def set_scene(scene:dict):
-        # print(b.get_scene('S Y N T H'))
-        b.activate_scene(scene_id=scene['scene_id'], group_id=scene['group_id'])
+class HueController:
+    """Controls HueLights & HueScenes via the Bridge object, per Settings"""
+
+    # Constructymajig
+    def __init__(self, bridge):
+        # TODO Pass in HueLights upon instantiation 
+        self.bridge = bridge
+        self.scenes = self.bridge.scenes
+        self.settings = HueSettings()
+        self._define_defaults()
+        self.rave_mode = False
+
+    def _define_defaults(self):
+        self.default_group = self.settings.get_default_group()
+
+    def toggle_lights(self):
+        lights = self.bridge.lights
+        for l in lights:
+            l.on = not l.on
+    
+    def list_scenes(self):
+        print("group\tlights\tscene_id\tname\t\tlastedited")
+        for scene in self.bridge.scenes:
+            print(f"{scene.group}\t{scene.lights}\t{scene.scene_id}\t{scene.name}\t{scene.lastupdated}")
+
+    def lights_on(self, speed=100):
+        lights = self.bridge.lights  # get dict with name as key
+        for l in lights:
+            l.bri = 254
+            l.on = True
+
+    def lights_off(self, speed=100):
         
-
-    def set_color(self, color, lights=settings.get_default_group(), speed=5):
-        command = {
-            'on' : True,
-            'bri' :  254,
-            'transitiontime' : speed,
-            'xy' : self._color[color]
-        }
-        b.set_light(lights, command)
-
-
-    @staticmethod
-    def lights_off(speed=100):
-        lights = b.lights
+        lights = self.bridge.lights
         for l in lights:
             l.transitiontime = speed
             l.bri = 254
             l.on = False
 
-
-    @staticmethod
-    def lights_on(speed=100):
-        lights = b.lights  # get dict with name as key
-        for l in lights:
-            l.bri = 254
-            l.on = True
-
-
-    async def flashbang(self):
-        # turn on the lights quikcly and at full brightness, all white (1,1)
-        self.set_color('white', speed=1)
-        await asyncio.sleep(1)
-        # fade them out slowly
-        self.lights_off(speed=500)
-        self.return_to_default()
-
-
-    async def wee_woo(self, rate, amount, lights=settings.get_default_group()):
-        self.lights_on()
+    def set_scene(self, scene_id, group_id=1, speed=1):
+        self.bridge.activate_scene(
+            scene_id=scene_id, 
+            group_id=group_id, 
+            transition_time=speed
+            )
     
-        for i in range(amount):
-            self.set_color('red', 254, lights=lights)
-            await asyncio.sleep(rate)
-            self.set_color('blue', 254, lights=lights)
-            await asyncio.sleep(rate)
-
-        self.return_to_default()
-
-
-    async def flash(self, color, rate, lights=settings.get_default_group(), amount=1):
-        self.set_color(color, lights)
-        
-        for i in range(amount):
-            await asyncio.sleep(rate)
-            self.lights_off()
-            await asyncio.sleep(rate)
-            self.lights_on()
-
-        self.return_to_default()
-
-
-    # WIP -- Needs functionality
+    def set_color(self, color, lights=None, speed=5):
+        if lights is None:
+            lights = self.default_group
+        command = {
+            'on' : True,
+            'bri' :  254,
+            'transitiontime' : speed,
+            'xy' : self.settings.color[color]
+        }
+        self.bridge.set_light(lights, command)
+    
     def return_to_default(self):
         'Returns all the lights to their default scene value'
+        self.set_scene(
+            self.settings.get_default_scene()['scene_id'],
+            self.settings.get_default_scene()['group_id']
+            )
 
-        print("Reaction over. Returning to default settings.")
-        self.set_scene(settings.get_default_scene())
+    # TODO make this asynchronous
+    async def flash(self, color, attack=10, sustain=.8, release=10, times=1):
+        'Flashes brightly then slowly fades away'
+        for i in range(times):
+            self.set_color(color, speed=attack)
+            await asyncio.sleep(sustain)
+            self.lights_off(speed=release)
+            await asyncio.sleep(sustain)
+
+        await asyncio.sleep(release/10)
+        self.return_to_default()
+
+    async def wee_woo(self, rate, amount, lights=None):
+        if lights is None:
+            lights = self.settings.get_default_group()
+
+        self.lights_on()
+
+        for i in range(amount):
+            self.set_color('red', lights=lights)
+            await asyncio.sleep(rate)
+            self.set_color('blue', lights=lights)
+            await asyncio.sleep(rate)
+
+        self.return_to_default()
+
+    # WIP -- Need top get around using a while loop.
+    async def rave_party(self, message, rate=0.5):
+
+        lights = self.default_group
+        self.rave_mode = True
+
+        try:
+            while True:
+                command = {
+                        'on' : True,
+                        'bri' :  254,
+                        'transitiontime' : 1,
+                        'xy' : [random.random(), random.random()]
+                    }
+                self.bridge.set_light(lights, command)
+                await asyncio.sleep(rate)
+                self.lights_off()
+                await asyncio.sleep(rate/2)
+        except RaveInterrupted:
+            pass
+
+        await twitch_bot.say(message.channel, "Rave.. BUSTED!")
+        self.return_to_default()
+
+    async def bust_the_rave(self):
+        self.rave_mode = False
 
 
+controller = HueController(Bridge("192.168.1.136"))
+controller.return_to_default()
 
-controller = Controller()
 
-
-def setup(pp):
+def setup():
     """If running for the first time, press button on bridge and
     run with b.connect() uncommented"""
 
     # b.connect()
     pass
-
-
-
-
-# WIP -- Need top get around using a while loop.
-async def rave_party(message, rate=0.5):
-
-    lights = b.lights
-
-    rave_mode = True
-
-    while rave_mode:
-        for light in lights:
-            lights_on(1)
-            light.xy = [random.random(), random.random()]
-            await asyncio.sleep(rate)
-            lights_off(1)
-            await asyncio.sleep(rate/2)
-
-    await twitch_bot.say(message.channel, "Rave.. BUSTED!")
-    
-    return_to_default()
-
-
-
     
     
 # ANCHOR DEBUG FUNCTIONS
 ###############################################################################
 
-def toggle_lights():
-    lights = b.lights
-    for l in lights:
-        l.on = not l.on
-        print(f"{l.name} switch to {l.on}")
 
-
-async def hue_task(func):
-    twitch_bot.loop.create_task(func())
+# async def hue_task(func):
+#     twitch_bot.loop.create_task(func())
 
 
 def list_groups(b):
@@ -226,17 +225,20 @@ def list_groups(b):
 
 
 def list_lights(b):
-
     lights = b.lights
     for l in lights:
         print(f"{l.light_id}  n={l.name} t={l.transitiontime}")
 
 
-
 def test():
-
-
-    pass
+    controller = HueController(Bridge("192.168.1.136"))
+    # controller.toggle_lights()
+    # controller.set_scene("oVlvecRqmwksXbZ", 1)
+    # controller.bridge.delete_scene("GTJOhrsw2LyKSK")
+    # controller.list_scenes()
+    # controller.set_color('red')
+    # controller.flash('white', attack=1, sustain=.1, release=40)
+    controller.flash('red', times=4)
 
 if __name__ == "__main__":
     # setup()

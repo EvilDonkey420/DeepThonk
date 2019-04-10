@@ -1,5 +1,6 @@
 import conf
-from integrations.hue.api_wrapper import controller
+from integrations.hue.api_wrapper import controller as hue
+from integrations.hue.api_wrapper import RaveInterrupted
 from sfx.sfx import play_sfx
 
 # config ze bot!
@@ -12,8 +13,8 @@ twitch_bot = conf.twitch_instance
 @twitch_bot.command('debug')
 async def debug(message):
 
-    twitch_bot.loop.create_task(flashbang())
     play_sfx('sfx/ledcmds/flashbang.ogg')
+    twitch_bot.loop.create_task(hue.flashbang())
 
     # hue.return_to_default() 
     # set_scene()
@@ -25,8 +26,8 @@ async def debug(message):
 
 @twitch_bot.command('flashbang')
 async def flashbang(message):
-    twitch_bot.loop.create_task(controller.flashbang())
     play_sfx('sfx/ledcmds/flashbang.ogg')
+    twitch_bot.loop.create_task(hue.flash('white', attack=1, sustain=.1, release=40))
 
 @twitch_bot.command('weewoo')
 async def weewoo(message):
@@ -36,18 +37,20 @@ async def weewoo(message):
         await twitch_bot.say(message.channel, f"subscribers only, @{message.author.name}")
         return
 
-    twitch_bot.loop.create_task(hue.wee_woo(1, 4))
+    play_sfx('sfx/ledcmds/weewoo.ogg')
+    twitch_bot.loop.create_task(hue.wee_woo(1, amount=4))
 
 
 @twitch_bot.command('lightson')
 async def lightson(message):
-
     hue.lights_on(1)
 
+@twitch_bot.command('toggled')
+async def toggled(message):
+    hue.toggle_lights()
 
 @twitch_bot.command('lightsoff')
 async def lightsoff(message):
-
     hue.lights_off(1)
 
 
@@ -65,8 +68,10 @@ async def rave(message):
 async def ravebusted(message):
     'Eventually a mock rave bust that happens in chat. Can we somehow gamify?'
 
-    global rave_mode
-    rave_mode = False
-
+    # global rave_mode
+    # rave_mode = False
+    
     await twitch_bot.say(message.channel, "OPEN UP IT'S DA POLICE")
+    raise RaveInterrupted
+    await hue.bust_the_rave()
     rave.cancel()
