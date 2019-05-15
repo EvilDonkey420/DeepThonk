@@ -27,20 +27,21 @@ except ImportError:
 
 
 @asyncio.coroutine
-def _get_url(loop, url):
-    session = aiohttp.ClientSession(loop=loop)
-    with aiohttp.Timeout(10):
-        response = yield from session.get(url)
+async def _get_url(loop, url):
+    # session = aiohttp.ClientSession(loop=loop)
+    timeout = aiohttp.ClientTimeout(total=10)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        response = await session.get(url)
         try:
             # other statements
-            return (yield from response.json())
+            return (await response.json())
         finally:
             if sys.exc_info()[0] is not None:
                 # on exceptions, close the connection altogether
-                response.close()
+                await response.close()
             else:
-                yield from response.release()
-            session.close()
+                await response.release()
+            await session.close()
 
 
 def _decrease_msgcount(self):
