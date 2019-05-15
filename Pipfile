@@ -10,6 +10,7 @@ pprint = "*"
 websocket = {extras = ["client"],version = "*"}
 websockets = "*"
 rope = "*"
+autopep8 = "*"
 
 [packages]
 pyyaml = "*"
@@ -19,6 +20,8 @@ discord = "*"
 python-socketio = "*"
 phue = "*"
 rgbxy = "*"
+obs-websocket-py = "*"
+isodate = "*"
 
 [requires]
 python_version = "3.6"
