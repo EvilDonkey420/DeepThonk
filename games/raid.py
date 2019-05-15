@@ -80,7 +80,7 @@ def is_happening():
 #trigger teh start of a raid
 def start():
     global raid_started
-    if raid_started == True:
+    if raid_started is True:
         return True
     else:
         return False
