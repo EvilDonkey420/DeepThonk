@@ -216,9 +216,9 @@ async def event_message(message):
     # sum1 sed fortnite
     cursed_word = content.cursed(message)
     if cursed_word:
-        msg = f"who said {cursed_word}!?!??"
+        msg = f"OwO! @{message.author.name} said a cursed word. =X"
         await twitch_bot.say(message.channel, msg)
-        await twitch_bot.say(message.channel, f'/timeout {message.author.name} 1 {cursed_word}')
+        # await twitch_bot.say(message.channel, f'/timeout {message.author.name} 1 {cursed_word}')
 
 ###############################################################################
 # SECTION Bot On / Off Control
