@@ -26,7 +26,7 @@ logging.getLogger('engineio').setLevel(logging.ERROR)
 
 @sio.on('connect')
 async def on_connect():
-    print('Streamlabs Socket.io Server... CONNECTERD!!')
+    print('[INFO] [Integrations > Streamlabs] Socket.io Server... CONNECTERD!!')
 
 
 async def set_hardmode(truthiness):
