@@ -6,15 +6,15 @@ import sys
 
 # Load the main config file
 with open(os.path.join(sys.path[0], 'config/config.yaml'), "r") as f:
-    cfg = yaml.load(f)
+    cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 # Load the modules config file
 with open(os.path.join(sys.path[0], 'config/modules.yaml'), "r") as f:
-    cfg_modules = yaml.load(f)
+    cfg_modules = yaml.load(f, Loader=yaml.FullLoader)
 
 # Load the integrations config file
 with open(os.path.join(sys.path[0], 'config/integrations.yaml'), "r") as f:
-    cfg_apis = yaml.load(f)
+    cfg_apis = yaml.load(f, Loader=yaml.FullLoader)
 
 
 # ANCHOR Master Bot Settings
