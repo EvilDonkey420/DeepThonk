@@ -16,10 +16,6 @@ async def debug(message):
     play_sfx('sfx/ledcmds/flashbang.ogg')
     twitch_bot.loop.create_task(hue.flashbang())
 
-    # hue.return_to_default() 
-    # set_scene()
-    # toggle_lights()
-
 
 # ANCHOR Twitch commands (mostly for debug purposes)
 ###############################################################################
@@ -54,24 +50,24 @@ async def lightsoff(message):
     hue.lights_off(1)
 
 
-# WIP -- Starts but won't cancel.
-@twitch_bot.command('rave')
-async def rave(message):
-    'Starts a rave, flashes a bunch of lights until it gets busted.'
+# # WIP -- Starts but won't cancel.
+# @twitch_bot.command('rave')
+# async def rave(message):
+#     'Starts a rave, flashes a bunch of lights until it gets busted.'
 
-    rave = twitch_bot.loop.create_task(hue.rave_party(message))
-    await rave
+#     rave = twitch_bot.loop.create_task(hue.rave_party(message))
+#     await rave
 
 
-# WIP -- Not actually canceling the rave.
-@twitch_bot.command('ravebusted')
-async def ravebusted(message):
-    'Eventually a mock rave bust that happens in chat. Can we somehow gamify?'
+# # WIP -- Not actually canceling the rave.
+# @twitch_bot.command('ravebusted')
+# async def ravebusted(message):
+#     'Eventually a mock rave bust that happens in chat. Can we somehow gamify?'
 
-    # global rave_mode
-    # rave_mode = False
+#     # global rave_mode
+#     # rave_mode = False
     
-    await twitch_bot.say(message.channel, "OPEN UP IT'S DA POLICE")
-    raise RaveInterrupted
-    await hue.bust_the_rave()
-    rave.cancel()
+#     await twitch_bot.say(message.channel, "OPEN UP IT'S DA POLICE")
+#     raise RaveInterrupted
+#     await hue.bust_the_rave()
+#     rave.cancel()
