@@ -10,7 +10,6 @@ from sfx.sfx import play_sfx
 # # config ze bot!
 twitch_bot = conf.twitch_instance
 
-
 if conf.modules['lists']:
 
     ###############################################################################
@@ -113,3 +112,5 @@ if conf.modules['lists']:
                 await twitch_bot.say(message.channel, msg)
 
     # !SECTION
+
+
