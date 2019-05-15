@@ -91,7 +91,7 @@ class SoundEffect(object):
         # create/register file as command in event-loop
         @twitch_bot.command(self.name)
         async def sfx_func(message):
-            if message.author.subscriber or message.author.name.lower() == 'ninjabunny9000':
+            if message.author.subscriber or message.author.mod or message.author.name.lower() == 'ninjabunny9000':
                 # compare last use to this use & timeout var
                 if time.time() - self.last_used >= self.timeout:
                     play_sfx(self.path)
@@ -211,7 +211,7 @@ class LEDSoundEffect(object):
         # create/register file as command in event-loop
         @twitch_bot.command(self.cmd)
         async def led_sfx_func(message):
-            if message.author.subscriber:
+            if message.author.subscriber or message.author.mod:
                 # playsound(self.path + self.cmd + '.ogg') # REVIEW 
                 play_sfx(self.path + self.cmd + '.ogg')
         
