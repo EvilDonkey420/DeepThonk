@@ -2,13 +2,6 @@
 #  - Make cam/source changes work only in certain scenes (to prevent accidental enabling)
 #       - raid game maybe?
 #       - can't jump scenes in the middle of raids, etc.
-#
-# DONE
-#  - Handle instantiation of the OBSCtrl abs-layer better, (own ws.connect,etc)
-#  - Update scene changes control to work with websockets vs advanced scene switcher
-#  - Move bot commands to ctrl.py
-#  - Make functions for switching scenes with websocket
-#  - Or make a way to toggle scene control on/off? Maybe a "privacy/brb" mode? (!faceless)
 
 from obswebsocket import obsws, requests
 
