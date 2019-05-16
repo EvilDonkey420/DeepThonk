@@ -1,15 +1,78 @@
-import conf
-from integrations.twitch.privilege import is_mod
-
+from integrations.obs.websocket import obs
 from utils.logger import loggyballs as log
 
 # config ze bot!
+import conf
 twitch_bot = conf.twitch_instance
 
 
-###############################################################################
-# SECTION OBS Scene Control
-###############################################################################
+# ANCHOR Utilities
+
+# disables switching to facecam until it's toggled back off - privacy stuff w/e
+@twitch_bot.command('faceless')
+async def faceless(message):
+    if message.author.mod or message.author.name == conf.streamer:
+        obs.face_cam_allowed = not obs.face_cam_allowed
+        if obs.face_cam_allowed:
+            obs.enableSource('CAM - Face', True, '[SC] Cams (with frame)')
+            msg = "facecam back online!"
+        else:
+            obs.enableSource('CAM - Face', False, '[SC] Cams (with frame)')
+            msg = "facecam offline for an minuto. brb!"
+
+        await twitch_bot.say(message.channel, msg)
+
+
+# ANCHOR Source Control
+
+# Swaps to face cam (SUB-only)
+@twitch_bot.command('face')
+async def face(message):
+
+    if not obs.face_cam_allowed:
+        msg = f"@{message.author.name}, facecam is disabled for a min. BRB. <3"
+    elif message.author.subscriber or message.author.mod or message.author.name == conf.streamer:
+        obs.enableSource('CAM - Face', True, '[SC] Cams (with frame)')
+        msg = 'Face cam is back!'
+    else:
+        msg = f"@{message.author.name}, {obs.no_permissions_msg}"
+
+    await twitch_bot.say(message.channel,msg)
+
+
+# Swaps to kb cam (SUB-only)
+@twitch_bot.command('kb')
+async def kb(message):
+
+    if message.author.subscriber or message.author.mod or message.author.name == conf.streamer:
+        obs.enableSource('CAM - Face', False, '[SC] Cams (with frame)')
+        msg = 'Clickity-clack time!!'
+    else:
+        msg = f"@{message.author.name}, {obs.no_permissions_msg}"
+
+    await twitch_bot.say(message.channel, msg)
+
+
+# ANCHOR Scene Control
+
+# switches scene to chatting
+@twitch_bot.command('chat')
+async def chat(message):
+    obs.switchScene('Chatting')
+    msg = f"@{message.author.name} switched the scene to Chatting."
+    await twitch_bot.say(message.channel, msg)
+
+
+# switches scene to live coding
+@twitch_bot.command('code')
+async def code(message):
+    obs.switchScene('Live Coding')
+    msg = f"@{message.author.name} switched the scene to Live Coding."
+    await twitch_bot.say(message.channel, msg)
+
+
+
+# ANCHOR OBS Scene Control - OLD METHOD
 
 def change_scene(scene):
     """
@@ -32,70 +95,3 @@ def get_scene():
     scene = f.readline()
     f.close()
     return scene
-
-
-@twitch_bot.command('obsscene')
-async def obsscene(message):
-    if is_mod(message):
-        scene = get_scene()
-        msg = f'@{message.author.name}, the current scene is {scene}'
-        await twitch_bot.say(message.channel, msg)
-
-
-@twitch_bot.command('obsbsod')
-async def obsbsod(message):
-    if is_mod(message):
-        change_scene('BSOD')
-
-
-@twitch_bot.command('afk')
-async def afk(message):
-    if is_mod(message):
-        change_scene(conf.scenes['brb'])
-
-
-@twitch_bot.command('wb')
-async def wb(message):
-    if is_mod(message):
-        change_scene(conf.scenes['main'])
-
-
-@twitch_bot.command('obsintro')
-async def obsintro(message):
-    if is_mod(message):
-        change_scene('INTRO')
-
-
-@twitch_bot.command('obsswap')
-async def obsswap(message):
-    if is_mod(message):
-        change_scene('GAMES SWAP')
-
-
-@twitch_bot.command('obsraid')
-async def obsswobsraidap(message):
-    if is_mod(message):
-        change_scene('RAID')
-
-
-@twitch_bot.command('obsraid2')
-async def obsraid2(message):
-    if is_mod(message):
-        change_scene('RAID2')
-
-
-@twitch_bot.command('obsdj')
-async def obsdj(message):
-    if is_mod(message):
-        change_scene('DJ')
-
-
-# switch scene to GAMES    
-@twitch_bot.command('obsmain')
-async def obsmain(message):
-    if is_mod(message):
-        change_scene('MAIN')
-        msg = "Switching scene back to MAIN."
-        await twitch_bot.say(message.channel, msg) 
-
-# !SECTION 
