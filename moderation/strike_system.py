@@ -1,18 +1,15 @@
 import time
-
-import conf
 import data_tools
-
 from integrations.twitch import privilege
-from sfx.sfx import play_sfx, play_random
+from sfx.sfx import play_random
 
 
 # config ze bot!
+import conf
 twitch_bot = conf.twitch_instance
 
-###############################################################################
+
 # ANCHOR  Strike System
-###############################################################################
 
 # look at all these Globals™
 probation_timer = {}    # TODO Move to db
@@ -87,6 +84,7 @@ async def strike(message):
 
         # register the time for probation timer
         probation_timer.update({user : time.time()})
+        
         # time them out
         await twitch_bot.say(
             message.channel, 
@@ -106,6 +104,7 @@ async def strikes(message):
     2nd = Instaban if still in prob period
     3rd = Immediate ban
     """
+
     global strike_table
     
     # check for privilege
