@@ -104,6 +104,7 @@ def faq(message, commands=False):
         "!soundcloud" : "Bun has mixes up on Soundcloud at https://soundcloud.com/pme/tracks",
         "!bmo" : "Bun built a real-life BMO! Build blog: http://bit.ly/bmo-build-blog",
         "!asl" : "18/f/cali",
+        "!camfx" : "Bun's using Snap Camera for fx. Check out https://snapcamera.snapchat.com",
         "!subperks" : "subscribing supporters of the channel gain access to channel emotes ninjab1Slay ninjab1Bigups ninjab1Orly, can use !sfx commands, control face & keyboard cameras, and earn points at 3x the rate, and can use special.",
         # "!cam" : "Bun's using a Canon 70D w/ Rokinon Cine 35mm prime 1.4",
         "!heresyourproblem" : "https://clips.twitch.tv/EndearingCleverRadishWTRuck",
