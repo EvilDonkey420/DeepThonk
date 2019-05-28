@@ -8,6 +8,7 @@ import conf
 import games.raid
 from utils.logger import loggyballs as logger
 
+from moderation.permissions import getPermMode
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
@@ -87,23 +88,25 @@ class SoundEffect:
         self.path = cmd_path
         self.timeout = cmd_timeout
         self.last_used = time.time()
+        SoundEffect.commands.append(self) # list of sfx cmds
 
         # create/register file as command in event-loop
         @twitch_bot.command(self.name, module='SFX', perm=2)
         async def sfx_func(message):
-            if message.author.subscriber or message.author.mod or message.author.name.lower() == 'ninjabunny9000':
+
+            # if sub+ & they're not sub+
+            if getPermMode() is 2 and not message.author.subscriber:
+                # give no-perms feedback to chat and exit func/cmd
+                msg = f"@{message.author.name}, sfx are for subscribers only \
+                    atm. Sorry!"
+                await twitch_bot.say(message.channel, msg)
+                return
+            
+            else: # otherwise continue like normal
                 # compare last use to this use & timeout var
                 if time.time() - self.last_used >= self.timeout:
                     play_sfx(self.path)
-                    # update the last_used thing
                     self.last_used = time.time()
-            else:
-                # print(f'no permissions! @{message.author.name.lower()}')
-                msg = f"@{message.author.name}, sfx are for subscribers only atm. Sorry!"
-                await twitch_bot.say(message.channel, msg)
-
-        # add the command object to a list to be used later for spreadsheet generation
-        SoundEffect.commands.append(self)
 
 
 # REVIEW  move into a function later during refactor
