@@ -4,6 +4,8 @@ import datetime
 import inspect
 import os
 
+import utils.commands
+
 try:
     import isodate
     iso_installed = True
@@ -161,7 +163,7 @@ class Message:
 class Command:
     """ A command class to provide methods we can use with it """
 
-    def __init__(self, bot, comm, desc='', alias=[], admin=False, unprefixed=False, listed=True):
+    def __init__(self, bot, comm, desc='', alias=[], admin=False, unprefixed=False, listed=True, module='Uncategorized', perm=0):
         self.comm = comm
         self.desc = desc
         self.alias = alias
@@ -173,6 +175,9 @@ class Command:
         bot.commands[comm] = self
         for a in self.alias:
             bot.commands[a] = self
+
+        # NOTE Bun-function™
+        utils.commands.register(self.comm, module, perm_lvl=perm)
 
     def subcommand(self, *args, **kwargs):
         """ Create subcommands """
