@@ -76,7 +76,7 @@ def play_random(folder_path):
 # SECTION SFX Generation via folder/file structure bidness
 ###################################################################
 
-class SoundEffect(object):
+class SoundEffect:
     'Base class for all sound effects.'
 
     commands = []
@@ -125,7 +125,7 @@ for file in os.listdir(path):
 ###################################################################
 
 
-class RandomSoundEffect(object):
+class RandomSoundEffect:
     """
     Base class for all rando sound effects.
 
@@ -197,7 +197,7 @@ generate_random_sfx_commands()
 # SECTION Light-reactive SFX
 ###################################################################
 
-class LEDSoundEffect(object):
+class LEDSoundEffect:
     'Base class for all lighted-reactive sound effects.'
 
     commands = []
