@@ -226,7 +226,7 @@ async def event_message(message):
 
 # make it stahp
 off_cmd = conf.bot_settings['off_cmd'].lower()
-@twitch_bot.command(off_cmd)
+@twitch_bot.command(off_cmd, module='Admin', perm=6)
 async def off(message):
     if message.author.mod or message.author.name == conf.streamer:
         play_sfx('sfx/hooks/oof.ogg')  # DEBUG 
@@ -251,7 +251,7 @@ async def off(message):
 # SECTION "What do?" (where does this stuff go???)
 ###############################################################################
 
-@twitch_bot.command('so')
+@twitch_bot.command('so', module='Utils', perm=5)
 async def so(message):
     if is_mod(message):
         token = data_tools.tokenize(message, 2)
@@ -280,7 +280,7 @@ async def so(message):
 # SECTION Easter Eggs
 ###############################################################################
 
-@twitch_bot.command('easteregg')
+@twitch_bot.command('easteregg', module='Utils', perm=0)
 async def easteregg(message):
     """
     Just an easter egg.

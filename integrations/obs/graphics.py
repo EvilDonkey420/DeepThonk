@@ -24,7 +24,7 @@ if conf.lists['task']:
         data_tools.string_to_txt('data/lists/tasks/', 'current_task.txt', stringyboi, lower_case=False)
 
 
-    @twitch_bot.command('task')
+    @twitch_bot.command('task', module='Help', perm=0)
     async def task(message):
         """
         Keep track of what task you're currently workin on during stream. (WIP: needs to
@@ -45,7 +45,7 @@ if conf.lists['task']:
             await twitch_bot.say(message.channel, msg) # print the current task
 
 
-    @twitch_bot.command('randomtask')
+    @twitch_bot.command('randomtask', module='Help', perm=0)
     async def randomtask(message):
         tasks = data_tools.txt_to_list('data/lists/tasks/', 'current_task.txt')
         msg = f'@{message.author.name}: "{str(random.choice(tasks))}"'

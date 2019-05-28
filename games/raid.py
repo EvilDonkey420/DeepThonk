@@ -232,7 +232,7 @@ def get_defenders():
 # ANCHOR  Raid Function
 ###############################################################################
 
-@twitch_bot.command('raid')
+@twitch_bot.command('raid', module='Event Reactions', perm=3)
 async def raid(message):
 
     if message.author.name.lower() in conf.bot_list:
@@ -300,7 +300,7 @@ async def raid(message):
     await twitch_bot.say(message.channel, msg)
     
 
-@twitch_bot.command('raidover')
+@twitch_bot.command('raidover', module='Event Reactions', perm=5)
 async def raidover(message):
     global raid_started
     global raid_in_progress
@@ -331,7 +331,7 @@ async def raidover(message):
 # !SECTION
 
 # fakes a raid start
-@twitch_bot.command('fakeraid')
+@twitch_bot.command('fakeraid', module='debug', perm=6)
 async def fakeraid(message):
     
     if message.author.name.lower() == 'ninjabunny9000':

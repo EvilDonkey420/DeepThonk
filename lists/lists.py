@@ -18,7 +18,7 @@ if conf.modules['lists']:
 
     if conf.lists['bands']:
 
-        @twitch_bot.command('bands')
+        @twitch_bot.command('bands', module='Lists', perm=0)
         async def bands(message):
             'Works similar to quotes, but tracks TOTALLY AWESOME band names.'
 
@@ -62,7 +62,7 @@ if conf.modules['lists']:
 
     if conf.lists['movienight']:
 
-        @twitch_bot.command('movienight')
+        @twitch_bot.command('movienight', module='Lists', perm=0)
         async def movienight(message):
 
             token = data_tools.tokenize(message, 1, lower_case=False)
@@ -86,7 +86,7 @@ if conf.modules['lists']:
 
     if conf.lists['comments']:
 
-        @twitch_bot.command('smrt')
+        @twitch_bot.command('smrt', module='Lists', perm=0)
         async def smrt(message):
             token = data_tools.tokenize(message, 1, lower_case=False)
             if len(token) > 1:

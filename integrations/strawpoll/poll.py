@@ -40,7 +40,7 @@ def reset_poll():
 
 
 # FUCK FUCK FUCK FUCK WHY DID I DO THIS FUCK FUCK FUCK
-@twitch_bot.command('poll')
+@twitch_bot.command('poll', module='Utils', perm=5)
 async def poll(message):
     """ it's ok it works fine now """
 
@@ -92,7 +92,7 @@ async def poll(message):
         reset_poll()
         # reset all teh poll vars
 
-@twitch_bot.command('endpoll')
+@twitch_bot.command('endpoll', module='Utils', perm=5)
 async def endpoll(message):
     msg = f"The poll is over! The winning something something is {get_winner()}"
     await twitch_bot.say(message.channel, msg)

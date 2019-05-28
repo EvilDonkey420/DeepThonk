@@ -15,7 +15,7 @@ welcome_msg_sent = 0
 
 help_commands = conf.bot_settings['help_cmds']
 
-@twitch_bot.command('help', alias=help_commands)
+@twitch_bot.command('help', alias=help_commands, module='Help', perm=0)
 async def cmd(message):
     play_sfx('sfx/help.ogg')
     await twitch_bot.say(message.channel, content.help_menu(message))
@@ -29,7 +29,7 @@ branch_url = 'https://github.com/NinjaBunny9000/DeepThonk/tree/beta-refactor' # 
 repo_url = 'https://github.com/NinjaBunny9000/DeepThonk/'
 
 
-@twitch_bot.command('branch', alias=['current'])
+@twitch_bot.command('branch', alias=['current'], module='Help', perm=0)
 async def branch(message):
     token = data_tools.tokenize(message, 1)
     global branch_url
@@ -43,7 +43,7 @@ async def branch(message):
         await twitch_bot.say(message.channel, msg)
 
 
-@twitch_bot.command('repo', alias=['repository', 'suppository'])
+@twitch_bot.command('repo', alias=['repository', 'suppository'], module='Help', perm=0)
 async def repo(message):
     token = data_tools.tokenize(message, 1)
     global repo_url

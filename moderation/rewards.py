@@ -15,7 +15,7 @@ twitch_bot = conf.twitch_instance
 ###############################################################################
 
 
-@twitch_bot.command('bigups')
+@twitch_bot.command('bigups', module='Utils', perm=0)
 async def bigups(message):
     """
     Rewards followers/subs with whatever reward currnetly is for the strem.
@@ -25,6 +25,7 @@ async def bigups(message):
     !bigups qty - # of ppl on queue
     !bigups clear - rekt
     """
+
     # TODO Validation for members in the room
 
     play_sfx('sfx/hooks/bigups.ogg')

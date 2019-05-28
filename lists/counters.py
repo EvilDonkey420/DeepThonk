@@ -9,7 +9,7 @@ from integrations.twitch.privilege import is_bot, is_mod
 # # config ze bot!
 twitch_bot = conf.twitch_instance
 
-@twitch_bot.command('counter')
+@twitch_bot.command('counter', module='Utils', perm=0)
 async def counter(message):
     pass
     """

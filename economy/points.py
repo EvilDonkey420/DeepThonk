@@ -8,7 +8,7 @@ twitch_bot = conf.twitch_instance
 
 
 #  get the points of the user that sends message (streamelements atm)
-@twitch_bot.command('points')
+@twitch_bot.command('points', module='economy')
 async def wutpoints(message):
     points = get_se_points(message.author.name)
     msg = f'@{message.author.name}, you have {points} points.'
@@ -21,13 +21,13 @@ async def wutpoints(message):
 
 if conf.economy['points_gifting']:
 
-    @twitch_bot.command('gift')
+    @twitch_bot.command('gift', module='economy')
     async def gift(message):
         'Change meh'
 
         token = data_tools.tokenize(message, 3)
 
-        if len(token) <= 2 or token[2].isdigit() == False:
+        if len(token) <= 2 or token[2].isdigit() is False:
             msg = 'Try !gift <user> <amount>.'
             await twitch_bot.say(message.channel, msg)
             return

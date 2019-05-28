@@ -89,7 +89,7 @@ class SoundEffect(object):
         self.last_used = time.time()
 
         # create/register file as command in event-loop
-        @twitch_bot.command(self.name)
+        @twitch_bot.command(self.name, module='SFX', perm=2)
         async def sfx_func(message):
             if message.author.subscriber or message.author.mod or message.author.name.lower() == 'ninjabunny9000':
                 # compare last use to this use & timeout var
@@ -144,7 +144,7 @@ class RandomSoundEffect(object):
         self.last_used = time.time()
 
         # create/register file as command in event-loop
-        @twitch_bot.command(self.name, alias=self.aliases, unprefixed=True)
+        @twitch_bot.command(self.name, alias=self.aliases, unprefixed=True, module='Random SFX', perm=0)
         async def rando_sfx_func(message):
             # compare last use to this use & timeout var
             if time.time() - self.last_used >= self.timeout:
@@ -159,7 +159,7 @@ class RandomSoundEffect(object):
 
 def generate_random_sfx_commands():
 
-    path = 'C:/Users/Bun/Documents/repos/deepthonk/sfx/randoms'
+    path = 'sfx/randoms/'
 
     # get a list of folders in sfx/randoms & create commands for each
     for thing in os.listdir(path):
@@ -170,7 +170,7 @@ def generate_random_sfx_commands():
             files = []
 
             # create a list of mp3s in folders (excluding aliases.txt)
-            for file_name in os.listdir(f'sfx/randoms/{folder}'):
+            for file_name in os.listdir(f'{path}{folder}'):
                 if file_name.endswith('.ogg'):
                     # add it to a list
                     files.append(file_name)
@@ -209,7 +209,7 @@ class LEDSoundEffect(object):
         self.char = cmd_char
 
         # create/register file as command in event-loop
-        @twitch_bot.command(self.cmd)
+        @twitch_bot.command(self.cmd, module='LED SFX', perm=2)
         async def led_sfx_func(message):
             if message.author.subscriber or message.author.mod:
                 # playsound(self.path + self.cmd + '.ogg') # REVIEW 
@@ -237,7 +237,7 @@ setup_led_commands()
 
 
 # REVIEW function these out in a refactor
-@twitch_bot.command('sfx')
+@twitch_bot.command('sfx', module='Help', perm=0)
 async def sfx(message):
     'Spits out a list of SFX commands. Pretty simple at the moment.'
 
@@ -267,7 +267,7 @@ async def sfx(message):
 
 
 # REVIEW function these out in a refactor
-@twitch_bot.command('randomsfx')
+@twitch_bot.command('randomsfx', module='Help', perm=0)
 async def randomsfx(message):
     'Spits out a list of RANDOM SFX commands. Pretty simple at the moment.'
 
@@ -295,7 +295,7 @@ async def randomsfx(message):
 
 
 # REVIEW function these out in a refactor
-@twitch_bot.command('ledsfx')
+@twitch_bot.command('ledsfx', module='Help', perm=0)
 async def ledsfx(message):
     'Spits out a list of all the LED-enabled SFX'
 

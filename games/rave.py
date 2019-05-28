@@ -74,7 +74,7 @@ class Rave:
                 return None
 
 
-@twitch_bot.command('rave')
+@twitch_bot.command('rave', module='debug', perm=0)
 async def rave(message):
 
     global rave_party
@@ -84,7 +84,7 @@ async def rave(message):
     await twitch_bot.say(message.channel, f"@{message.author.name} IS THROWING A \
         RAVE! Use !raverole to discover your defining purpose in life.")
 
-@twitch_bot.command('raverole')
+@twitch_bot.command('raverole', module='debug', perm=0)
 async def raverole(message):
 
     try:

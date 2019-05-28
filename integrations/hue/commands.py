@@ -10,22 +10,22 @@ twitch_bot = conf.twitch_instance
 # ANCHOR Debug/test command
 ###############################################################################
 
-@twitch_bot.command('debug')
-async def debug(message):
+# @twitch_bot.command('debughue', module='debug', perm=0)
+# async def debughue(message):
 
-    play_sfx('sfx/ledcmds/flashbang.ogg')
-    twitch_bot.loop.create_task(hue.flashbang())
+#     play_sfx('sfx/ledcmds/flashbang.ogg')
+#     twitch_bot.loop.create_task(hue.flashbang())
 
 
 # ANCHOR Twitch commands (mostly for debug purposes)
 ###############################################################################
 
-@twitch_bot.command('flashbang')
+@twitch_bot.command('flashbang', module='debug', perm=0)
 async def flashbang(message):
     play_sfx('sfx/ledcmds/flashbang.ogg')
     twitch_bot.loop.create_task(hue.flash('white', attack=1, sustain=.1, release=40))
 
-@twitch_bot.command('weewoo')
+@twitch_bot.command('weewoo', module='HUE Lights', perm=2)
 async def weewoo(message):
 
     # gtfo if u dun b-long
@@ -36,18 +36,18 @@ async def weewoo(message):
     play_sfx('sfx/ledcmds/weewoo.ogg')
     twitch_bot.loop.create_task(hue.wee_woo(1, amount=4))
 
+# FIXME doing that thing where when it turns back on it's at 2% brightness
+# @twitch_bot.command('lightson', module='HUE Lights', perm=2)
+# async def lightson(message):
+#     hue.lights_on(1)
 
-@twitch_bot.command('lightson')
-async def lightson(message):
-    hue.lights_on(1)
+# @twitch_bot.command('toggled', module='HUE Lights', perm=2)
+# async def toggled(message):
+#     hue.toggle_lights()
 
-@twitch_bot.command('toggled')
-async def toggled(message):
-    hue.toggle_lights()
-
-@twitch_bot.command('lightsoff')
-async def lightsoff(message):
-    hue.lights_off(1)
+# @twitch_bot.command('lightsoff', module='HUE Lights', perm=2)
+# async def lightsoff(message):
+#     hue.lights_off(1)
 
 
 # # WIP -- Starts but won't cancel.

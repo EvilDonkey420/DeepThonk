@@ -15,7 +15,7 @@ twitch_bot = conf.twitch_instance
 probation_timer = {}    # TODO Move to db
 strike_table = dict()   # TODO Move to db
 
-@twitch_bot.command('strike')
+@twitch_bot.command('strike', module='Moderation', perm=5)
 async def strike(message):
     'Command looks like..??? ==> !strike <user> <reason>'
 
@@ -95,7 +95,7 @@ async def strike(message):
         await twitch_bot.say(message.channel, msg)
 
 
-@twitch_bot.command('strikes')
+@twitch_bot.command('strikes', module='Moderation', perm=5)
 async def strikes(message):
     """
     !Strike <user>
@@ -123,7 +123,7 @@ async def strikes(message):
     await twitch_bot.say(message.channel, msg)
 
 
-@twitch_bot.command('mybad')
+@twitch_bot.command('mybad', module='Moderation', perm=5)
 async def mybad(message):
     '!mybad <user> removes a strike for the user.'
     # check for privilege
@@ -165,7 +165,7 @@ async def mybad(message):
         msg = f'@{user} isn\'t stoked rn, @{message.author.name}.'
 
 
-@twitch_bot.command('stroken', alias=('yoted', 'yuted', 'yoten'))
+@twitch_bot.command('stroken', alias=('yoted', 'yuted', 'yoten'), module='Moderation', perm=0)
 async def stroken(message):
     global strike_table
     

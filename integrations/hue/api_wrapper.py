@@ -57,7 +57,7 @@ class HueSettings:
         'group_id' : '1'
     }
 
-    default_group = ['bed', 'stairs', 'desk']
+    default_group = ['bed', 'stairs', 'desk', 'DJ Ambient', 'Behind Desk', 'DJ Face']
 
     color = {
         "test" : hex("ff0000"),

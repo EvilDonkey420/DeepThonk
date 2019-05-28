@@ -6,8 +6,6 @@ import os
 # internal modules & packages
 import conf
 import data_tools
-import integrations.twitch.api_wrapper
-from integrations.twitch.privilege import is_mod
 from integrations.streamelements.api_wrapper import get_points, put_points
 from sfx.sfx import play_sfx
 
@@ -15,16 +13,17 @@ from sfx.sfx import play_sfx
 twitch_bot = conf.twitch_instance
 
 earworm_last_used = time.time() - 60
-earworm_timeout_period = 60
+earworm_timeout_period = 0
 
 
 ###############################################################################
 # SECTION Earworm Roulet™ (WIP)
 ###############################################################################
 
-@twitch_bot.command('earworm')
+@twitch_bot.command('earworm', module='Games')
 async def earworm(message):
     '[earworm] ------> [lose]'
+
     global earworm_last_used
 
     # focus-mode cooldown timer
@@ -91,6 +90,6 @@ async def earworm(message):
     play_sfx(random_mp3)
 
     earworm_last_used = time.time()
-    log.debug(f"earworm used. timer reset")
+    # log.debug(f"earworm used. timer reset")
 
 # !SECTION 
