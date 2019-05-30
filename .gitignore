@@ -34,3 +34,5 @@ debug/
 *.pkf
 
 *.wav
+
+data/cmds/
