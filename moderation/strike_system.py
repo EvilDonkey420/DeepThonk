@@ -1,7 +1,8 @@
 import time
 import data_tools
 from integrations.twitch import privilege
-from sfx.sfx import play_random
+# from sfx.sfx import play_random
+import sfx.sfx
 
 
 # config ze bot!
@@ -64,12 +65,12 @@ async def strike(message):
             await twitch_bot.say(message.channel, f'/ban {user}')
 
             del strike_table[user]
-            play_random('sfx/events/strikes/')
+            sfx.sfx.play_random('sfx/events/strikes/')
 
         # otherwise this is strike #2
         else:
             if user in strike_table:
-                play_random('sfx/events/strikes/')
+                sfx.sfx.play_random('sfx/events/strikes/')
                 strike_table.update({user : 2})
                 await twitch_bot.say(
                     message.channel, 
@@ -91,7 +92,7 @@ async def strike(message):
             f'/timeout {strike_timeout}m {user} cuz shit-tier.')
         strike_1_message = conf.moderation['strike_1_message']
         msg = f'Strike #1, @{user}.  {strike_1_message}'
-        play_random('sfx/events/strikes/')
+        sfx.sfx.play_random('sfx/events/strikes/')
         await twitch_bot.say(message.channel, msg)
 
 

@@ -1,11 +1,9 @@
-import asyncio
-import time
 
 # internal modules & packages
 import conf
 import data_tools
-from sfx.sfx import play_sfx
-from integrations.twitch import privilege
+# from sfx.sfx import play_sfx
+import sfx
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
@@ -28,7 +26,7 @@ async def bigups(message):
 
     # TODO Validation for members in the room
 
-    play_sfx('sfx/hooks/bigups.ogg')
+    sfx.sfx.play_sfx('sfx/hooks/bigups.ogg')
 
     # global dict for rewards
     # reward_register = data_tools.txt_to_list('data/', 'reward_list.txt')

@@ -8,7 +8,7 @@ import conf
 import games.raid
 from utils.logger import loggyballs as logger
 
-from moderation.permissions import getPermMode
+import moderation.permissions
 
 # config ze bot!
 twitch_bot = conf.twitch_instance
@@ -94,8 +94,8 @@ class SoundEffect:
         @twitch_bot.command(self.name, module='SFX', perm=2)
         async def sfx_func(message):
 
-            # if sub+ & they're not sub+
-            if getPermMode() is 2 and not message.author.subscriber:
+            # check permissions mode
+            if moderation.permissions.getPermMode() is 2 and not message.author.subscriber:
                 # give no-perms feedback to chat and exit func/cmd
                 msg = f"@{message.author.name}, sfx are for subscribers only \
                     atm. Sorry!"

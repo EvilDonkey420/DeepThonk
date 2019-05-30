@@ -1,14 +1,11 @@
 import asyncio
 import time
-import random
 
 # internal modules & packages
 import conf
 import data_tools
 import integrations.twitch.api_wrapper
-from integrations.obs.ctrl import change_scene, get_scene
-from integrations.twitch.privilege import is_bot, is_mod
-from sfx.sfx import play_sfx
+import sfx.sfx
 from utils.logger import loggyballs as log
 
 # config ze bot!
@@ -244,7 +241,7 @@ async def raid(message):
     # start teh raid sequcence
     global raid_started
     raid_started = False # FIXME why does this need to be here?
-    play_sfx('sfx/events/raid.ogg')
+    sfx.sfx.play_sfx('sfx/events/raid.ogg')
 
     # REVIEW NinjaBunny9000 channel only!
     if conf.twitch_channel.lower() == 'ninjabunny9000'.lower():
@@ -311,7 +308,7 @@ async def raidover(message):
 
     # REVIEW NinjaBunny9000 channel only!
     if conf.twitch_channel.lower() == 'ninjabunny9000'.lower():
-        play_sfx('sfx/randoms/disabled/disabled.ogg')
+        sfx.sfx.play_sfx('sfx/randoms/disabled/disabled.ogg')
     change_scene(conf.raid['victory_scene'])
     await twitch_bot.say(message.channel, "Keepo")
     await asyncio.sleep(1)
